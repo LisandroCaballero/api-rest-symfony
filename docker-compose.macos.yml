@@ -1,0 +1,60 @@
+version: '3.5'
+
+services:
+  sf5-videos-api-web:
+    container_name: sf5-videos-api-web
+    build:
+      context: ./docker/nginx
+      args:
+        UID: $U_ID
+    ports:
+      - 200:80
+    volumes:
+      - ./public:/appdata/www/public
+    depends_on:
+      - sf5-videos-api-be
+    networks:
+      - sf5-videos-api-network
+
+  sf5-videos-api-be:
+    container_name: sf5-videos-api-be
+    build:
+      context: docker/php
+      args:
+        UID: $U_ID
+    environment:
+      PHP_IDE_CONFIG: serverName=Docker
+      PHP_XDEBUG_ENABLED: 1
+      XDEBUG_CONFIG: remote_host=172.17.0.1 remote_port=9005
+    volumes:
+      - ./:/appdata/www
+      - ./docker/php/xdebug-linux.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ~/.ssh/id_rsa:/home/appuser/.ssh/id_rsa
+    depends_on:
+      - sf5-videos-api-db
+    networks:
+      - sf5-videos-api-network
+
+  sf5-videos-api-db:
+    container_name: sf5-videos-api-db
+    image: mysql:5.7
+    ports:
+      - 3350:3306
+    environment:
+      MYSQL_DATABASE: sf5-videos-api_api
+      MYSQL_USER: adminlc
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+    command: mysqld --sql_mode="STRICT_ALL_TABLES,NO_ENGINE_SUBSTITUTION"
+    volumes:
+      - sf5-videos-api-db-data:/var/lib/mysql
+    networks:
+      - sf5-videos-api-network
+
+volumes:
+  sf5-videos-api-db-data:
+  sf5-videos-api-be-sync:
+    external: true
+
+networks:
+  sf5-videos-api-network:
