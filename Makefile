@@ -1,7 +1,7 @@
 #!/bin/bash
 
-OS := $(shell uname)
 DOCKER_BE = sf5-videos-api-be
+UID = $(shell id -u)
 
 ifeq ($(OS),Darwin)
 	UID = $(shell id -u)
