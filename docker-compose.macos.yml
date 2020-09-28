@@ -39,7 +39,7 @@ services:
     container_name: sf5-videos-api-db
     image: mysql:5.7
     ports:
-      - 3350:3306
+      - 3303:3306
     environment:
       MYSQL_DATABASE: sf5-videos-api_api
       MYSQL_USER: adminlc

@@ -8,11 +8,15 @@ services:
       args:
         UID: $U_ID
     ports:
-      - 200:80
+      - 80:80
+    hostname: api.rest.devel
+    extra_hosts:
+      - "api.rest.devel:127.0.0.1"
     volumes:
       - ./public:/appdata/www/public
     depends_on:
       - sf5-videos-api-be
+      - sf5-videos-api-db
     networks:
       - sf5-videos-api-network
 
@@ -41,11 +45,11 @@ services:
     ports:
       - 3302:3306
     environment:
-      MYSQL_DATABASE: sf5-videos-api_api
+      MYSQL_DATABASE: api_rest_symfony
       MYSQL_USER: adminlc
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: root
-    command: mysqld --sql_mode="STRICT_ALL_TABLES,NO_ENGINE_SUBSTITUTION"
+
     volumes:
       - sf5-videos-api-db-data:/var/lib/mysql
     networks:

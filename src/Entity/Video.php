@@ -64,7 +64,7 @@ class Video
     private $updatedAt = 'CURRENT_TIMESTAMP';
 
     /**
-     * @var \User
+     * @var \Users
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
