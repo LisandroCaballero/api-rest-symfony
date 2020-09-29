@@ -1,5 +1,5 @@
 #!/bin/bash
-
+DOCKER_DB = sf5-videos-api-db
 DOCKER_BE = sf5-videos-api-be
 UID = $(shell id -u)
 
@@ -56,7 +56,7 @@ prepare: ## Runs backend commands
 
 # Backend commands
 be-sf-permissions: ## Configure the Symfony permissions
-	U_ID=${UID} docker exec -it -uroot ${DOCKER_BE} sh /usr/bin/sf-permissions
+	U_ID=${UID} docker exec -it -uroot ${DOCKER_BE} bash /usr/bin/sf-permissions
 
 composer-install: ## Installs composer dependencies
 	U_ID=${UID} docker exec --user ${UID} -it ${DOCKER_BE} composer install --no-scripts --no-interaction --optimize-autoloader
@@ -75,7 +75,8 @@ ssh-be: ## ssh's into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
 
 ssh-db: ##
-	docker exec -it sf5-videos-api-db mysql -uroot -proot  bash
+	docker exec -it  ${DOCKER_DB} mysql -uroot -proot
+
 
 
 
