@@ -74,8 +74,7 @@ be-logs: ## Tails the Symfony dev log
 ssh-be: ## ssh's into the be container
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} bash
 
-ssh-db: ##
-	docker exec -it  ${DOCKER_DB} mysql -uroot -proot
+
 
 
 
